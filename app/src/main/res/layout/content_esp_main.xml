@@ -7,19 +7,333 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_esp_main">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@id/btn_provision_device">
 
         <ImageView
             android:id="@+id/iv_esp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_esp"/>
+            android:src="@drawable/ic_esp" />
 
-    </RelativeLayout>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/et_usr_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email Id"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/et_usr_device1_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Device-1 Name"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/et_usr_device2_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Device-2 Name"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2" >
+
+            <EditText
+                android:id="@+id/et_usr_device1_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Description"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/et_usr_device2_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Description"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2" >
+
+            <Spinner
+                android:id="@+id/spn_usr_device1_type"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:entries="@array/str_device_type_options"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Spinner
+                android:id="@+id/spn_usr_device2_type"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:entries="@array/str_device_type_options"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swc_usr_device1_dimmable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:text="Dimmable"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swc_usr_device2_dimmable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:text="Dimmable"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/et_usr_device3_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Device-3 Name"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/et_usr_device4_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Device-4 Name"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2" >
+
+            <EditText
+                android:id="@+id/et_usr_device3_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Description"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/et_usr_device4_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:hint="Description"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2" >
+
+            <Spinner
+                android:id="@+id/spn_usr_device3_type"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:entries="@array/str_device_type_options"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <Spinner
+                android:id="@+id/spn_usr_device4_type"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:entries="@array/str_device_type_options"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:background="@android:drawable/btn_dropdown"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="2">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swc_usr_device3_dimmable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:text="Dimmable"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swc_usr_device4_dimmable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_8"
+                android:text="Dimmable"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12sp" />
+
+        </TableRow>
+
+    </TableLayout>
 
     <include
         android:id="@+id/btn_provision_device"
@@ -37,7 +351,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_32"
+        android:layout_margin="@dimen/margin_16"
         android:orientation="vertical">
 
         <TextView

@@ -119,4 +119,12 @@
     <string name="security_selection_title">Encrypted Device Communication</string>
     <string name="summary_security">Send data using Security1</string>
 
+    <string-array name="str_device_type_options">
+        <item>Light</item>
+        <item>Fan</item>
+        <item>Plug</item>
+        <item>Other</item>
+    </string-array>
+
+
 </resources>

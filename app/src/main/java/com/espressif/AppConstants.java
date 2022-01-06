@@ -28,6 +28,8 @@ public class AppConstants {
     public static final String KEY_DEVICE_TYPES = "device_types";
     public static final String KEY_SECURITY_TYPE = "security_type";
 
+    public static final String KEY_CUSTOM_DATA = "custom_data";
+
     public static final String ESP_PREFERENCES = "Esp_Preferences";
 
     public static final String DEVICE_TYPE_SOFTAP = "softap";

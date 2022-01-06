@@ -27,16 +27,20 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
@@ -59,6 +63,8 @@ public class EspMainActivity extends AppCompatActivity {
     private ImageView ivEsp;
     private SharedPreferences sharedPreferences;
     private String deviceType;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +185,98 @@ public class EspMainActivity extends AppCompatActivity {
     };
 
     private void addDeviceClick() {
+        String customData, readData;
+        EditText et_usr_email = (EditText) findViewById(R.id.et_usr_email);
+        EditText etDevice1Name = (EditText) findViewById(R.id.et_usr_device1_name);
+        EditText etDevice1Description = (EditText) findViewById(R.id.et_usr_device1_description);
+        EditText etDevice2Name = (EditText) findViewById(R.id.et_usr_device2_name);
+        EditText etDevice2Description = (EditText) findViewById(R.id.et_usr_device2_description);
+        EditText etDevice3Name = (EditText) findViewById(R.id.et_usr_device3_name);
+        EditText etDevice3Description = (EditText) findViewById(R.id.et_usr_device3_description);
+        EditText etDevice4Name = (EditText) findViewById(R.id.et_usr_device4_name);
+        EditText etDevice4Description = (EditText) findViewById(R.id.et_usr_device4_description);
+        Spinner spnDevice1 = (Spinner) findViewById(R.id.spn_usr_device1_type);
+        Spinner spnDevice2 = (Spinner) findViewById(R.id.spn_usr_device2_type);
+        Spinner spnDevice3 = (Spinner) findViewById(R.id.spn_usr_device3_type);
+        Spinner spnDevice4 = (Spinner) findViewById(R.id.spn_usr_device4_type);
+        SwitchCompat swcDevice1 = (SwitchCompat) findViewById(R.id.swc_usr_device1_dimmable);
+        SwitchCompat swcDevice2 = (SwitchCompat) findViewById(R.id.swc_usr_device2_dimmable);
+        SwitchCompat swcDevice3 = (SwitchCompat) findViewById(R.id.swc_usr_device3_dimmable);
+        SwitchCompat swcDevice4 = (SwitchCompat) findViewById(R.id.swc_usr_device4_dimmable);
+
+        /* Validating the Data */
+        if (TextUtils.isEmpty(et_usr_email.getText())) {
+            Toast.makeText(this, "Please provide Email ID", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (
+                TextUtils.isEmpty(etDevice1Name.getText()) &&
+                TextUtils.isEmpty(etDevice2Name.getText()) &&
+                TextUtils.isEmpty(etDevice3Name.getText()) &&
+                TextUtils.isEmpty(etDevice4Name.getText())
+        ) {
+            Toast.makeText(this, "At least one device name is needed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int d1max = spnDevice1.getCount(), d1Index = spnDevice1.getSelectedItemPosition();
+        int d2max = spnDevice2.getCount(), d2Index = spnDevice2.getSelectedItemPosition();
+        int d3max = spnDevice3.getCount(), d3Index = spnDevice3.getSelectedItemPosition();
+        int d4max = spnDevice4.getCount(), d4Index = spnDevice4.getSelectedItemPosition();
+        String d1CategoryBinary = Integer.toBinaryString(((d1Index < (d1max - 1)) ? d1Index : 15));
+        String d2CategoryBinary = Integer.toBinaryString(((d2Index < (d2max - 1)) ? d2Index : 15));
+        String d3CategoryBinary = Integer.toBinaryString(((d3Index < (d3max - 1)) ? d3Index : 15));
+        String d4CategoryBinary = Integer.toBinaryString(((d4Index < (d4max - 1)) ? d4Index : 15));
+
+        String d1Parameters = "", d2Parameters = "", d3Parameters = "", d4Parameters = "";
+        if (!TextUtils.isEmpty(etDevice1Name.getText())) {
+            d1Parameters =  "d1name=" + etDevice1Name.getText().toString() + "&" +
+                            "d1category=" + d1CategoryBinary + "&" +
+                            "d1dimmable=" + (swcDevice1.isChecked() ? "1" : "0") + "&" +
+                            "d1description=" + etDevice1Description.getText().toString() + "&";
+        }
+        if (!TextUtils.isEmpty(etDevice2Name.getText())) {
+            d2Parameters =  "d2name=" + etDevice2Name.getText().toString() + "&" +
+                            "d2category=" + d2CategoryBinary + "&" +
+                            "d2dimmable=" + (swcDevice2.isChecked() ? "1" : "0") + "&" +
+                            "d2description=" + etDevice2Description.getText().toString() + "&";
+        }
+        if (!TextUtils.isEmpty(etDevice3Name.getText())) {
+            d3Parameters =  "d3name=" + etDevice3Name.getText().toString() + "&" +
+                            "d3category=" + d3CategoryBinary + "&" +
+                            "d3dimmable=" + (swcDevice3.isChecked() ? "1" : "0") + "&" +
+                            "d3description=" + etDevice3Description.getText().toString() + "&";
+        }
+        if (!TextUtils.isEmpty(etDevice4Name.getText())) {
+            d4Parameters =  "d4name=" + etDevice4Name.getText().toString() + "&" +
+                            "d4category=" + d4CategoryBinary + "&" +
+                            "d4dimmable=" + (swcDevice4.isChecked() ? "1" : "0") + "&" +
+                            "d4description=" + etDevice4Description.getText().toString() + "&";
+        }
+
+        String emailParameter = "email=" + et_usr_email.getText().toString() + "&";
+
+        customData = emailParameter + d1Parameters + d2Parameters + d3Parameters + d4Parameters;
+
+        customData = customData.replaceAll(" ", "%20");
+        customData = customData.replaceAll("@", "%40");
+
+        int startIndex = 0, pendingToSend;
+        pendingToSend = customData.length();
+
+        while (pendingToSend > 0) {
+            String partial_custom_data = customData.substring(startIndex, (pendingToSend > 128 ? startIndex + 128: startIndex + pendingToSend));
+            Toast.makeText(this, partial_custom_data, Toast.LENGTH_LONG).show();
+            startIndex += 128;
+            pendingToSend -= 128;
+        }
+
+
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AppConstants.KEY_CUSTOM_DATA, customData);
+        editor.apply();
+
+        readData = sharedPreferences.getString(AppConstants.KEY_CUSTOM_DATA, "");
 
         if (BuildConfig.isQrCodeSupported) {
 

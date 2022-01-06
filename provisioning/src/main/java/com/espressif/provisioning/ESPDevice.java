@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
@@ -98,6 +99,8 @@ public class ESPDevice {
     private WifiManager wifiManager;
     private ConnectivityManager connectivityManager;
     private ConnectivityManager.NetworkCallback networkCallback;
+
+    private String global_custom_data;
 
     public ESPDevice(Context context, ESPConstants.TransportType transportType, ESPConstants.SecurityType securityType) {
 
@@ -528,9 +531,10 @@ public class ESPDevice {
      * @param passphrase        Password of the Wi-Fi which is to be configure in device.
      * @param provisionListener Listener for provisioning callbacks.
      */
-    public void provision(final String ssid, final String passphrase, final ProvisionListener provisionListener) {
+    public void provision(final String ssid, final String passphrase, String customData, final ProvisionListener provisionListener) {
 
         this.provisionListener = provisionListener;
+        global_custom_data = customData;
 
         if (session == null || !session.isEstablished()) {
 
@@ -706,6 +710,35 @@ public class ESPDevice {
 
     private void sendWiFiConfig(final String ssid, final String passphrase, final ProvisionListener provisionListener) {
 
+
+        int startIndex = 0, pendingToSend;
+        pendingToSend = global_custom_data.length();
+
+        while (pendingToSend > 0) {
+            String partial_custom_data = global_custom_data.substring(startIndex, (pendingToSend > 128 ? startIndex + 128: startIndex + pendingToSend));
+            startIndex += 128;
+            pendingToSend -= 128;
+            byte[] message = partial_custom_data.getBytes();
+
+            sendDataToCustomEndPoint(ESPConstants.HANDLER_CUSTOM_DATA, message, new ResponseListener() {
+                @Override
+                public void onSuccess(byte[] returnData) {
+
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         byte[] scanCommand = MessengeHelper.prepareWiFiConfigMsg(ssid, passphrase);
 
         session.sendDataToDevice(ESPConstants.HANDLER_PROV_CONFIG, scanCommand, new ResponseListener() {
@@ -741,7 +774,6 @@ public class ESPDevice {
     }
 
     private void applyWiFiConfig() {
-
         byte[] scanCommand = MessengeHelper.prepareApplyWiFiConfigMsg();
 
         session.sendDataToDevice(ESPConstants.HANDLER_PROV_CONFIG, scanCommand, new ResponseListener() {

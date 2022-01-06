@@ -14,13 +14,17 @@
 
 package com.espressif.ui.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +51,8 @@ public class ProvisionActivity extends AppCompatActivity {
     private ContentLoadingProgressBar progress1, progress2, progress3;
     private TextView tvErrAtStep1, tvErrAtStep2, tvErrAtStep3, tvProvError;
 
+    private SharedPreferences sharedPreferences;
+
     private CardView btnOk;
     private TextView txtOkBtn;
 
@@ -65,6 +71,9 @@ public class ProvisionActivity extends AppCompatActivity {
         passphraseValue = intent.getStringExtra(AppConstants.KEY_WIFI_PASSWORD);
         provisionManager = ESPProvisionManager.getInstance(getApplicationContext());
         initViews();
+
+        sharedPreferences = getSharedPreferences(AppConstants.ESP_PREFERENCES, Context.MODE_PRIVATE);
+
         EventBus.getDefault().register(this);
 
         Log.d(TAG, "Selected AP -" + ssidValue);
@@ -137,14 +146,25 @@ public class ProvisionActivity extends AppCompatActivity {
 
         txtOkBtn.setText(R.string.btn_ok);
         btnOk.setOnClickListener(okBtnClickListener);
+
+//        String customData;
+//        sharedPreferences = getSharedPreferences(AppConstants.ESP_PREFERENCES, Context.MODE_PRIVATE);
+//        customData = sharedPreferences.getString(AppConstants.KEY_CUSTOM_DATA, null);
+//        Toast.makeText(this, customData, Toast.LENGTH_SHORT).show();
     }
 
     private void doProvisioning() {
-
+        String customData;
         tick1.setVisibility(View.GONE);
         progress1.setVisibility(View.VISIBLE);
 
-        provisionManager.getEspDevice().provision(ssidValue, passphraseValue, new ProvisionListener() {
+        Activity parentActivity = this.getParent();
+
+        sharedPreferences = getSharedPreferences(AppConstants.ESP_PREFERENCES, Context.MODE_PRIVATE);
+        customData = sharedPreferences.getString(AppConstants.KEY_CUSTOM_DATA, "");
+//        Toast.makeText(this, customData, Toast.LENGTH_SHORT).show();
+
+        provisionManager.getEspDevice().provision(ssidValue, passphraseValue, customData, new ProvisionListener() {
 
             @Override
             public void createSessionFailed(Exception e) {
